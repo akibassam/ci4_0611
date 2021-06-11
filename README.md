@@ -1,63 +1,144 @@
-# CodeIgniter 4 Application Starter
+# MAC 세팅
 
-## What is CodeIgniter?
+## Homebrew 설치
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](http://codeigniter.com).
+### 참고 사이트
+* https://brew.sh/
+* https://designdepot.tistory.com/209
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+### 설치 및 실행
 
-More information about the plans for version 4 can be found in [the announcement](http://forum.codeigniter.com/thread-62615.html) on the forums.
+```sh 
+# M1 칩
+% /bin/bash -c "$(curl -fsSL https://gist.githubusercontent.com/nrubin29/bea5aa83e8dfa91370fe83b62dad6dfa/raw/48f48f7fef21abb308e129a80b3214c2538fc611/homebrew_m1.sh)"
 
-The user guide corresponding to this version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
+# 인텔 칩
+% /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-## Installation & updates
+# 실행
+% eval $(/opt/homebrew/bin/brew shellenv)
+```
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+### 자동 실행
+* .zshrc에 내용 추가
 
-## Setup
+```sh
+% vi ~/.zshrc
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+# M1 칩
+export PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+eval $(/opt/homebrew/bin/brew shellenv)
 
-## Important Change with index.php
+# 인텔 칩
+export PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+```
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+## PHP 설치
+```sh
+% brew install php
+```
 
-**Please** read the user guide for a better explanation of how CI4 works!
 
-## Repository Management
+## composer 설치
 
-We use Github issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+### 참고 사이트
+* https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos
+* https://www.lesstif.com/php-and-laravel/php-composer-23757293.html
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
 
-## Server Requirements
 
-PHP version 7.3 or higher is required, with the following extensions installed:
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+### 설치 파일 이용
+* download installer
+* run installer ```	php installer ```
+* remove installer
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+### 글로벌 설정
+```sh
+% vi ~/.zshrc
 
-- json (enabled by default - don't turn it off)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php)
-- xml (enabled by default - don't turn it off)
+export PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+eval $(/opt/homebrew/bin/brew shellenv)
+alias composer="php /usr/local/bin/composer/composer.phar"
+
+% source ~/.zshrc
+```
+
+
+
+
+
+
+
+## MySQL
+
+### 설치 
+```sh
+% brew install mysql
+% brew install mysql-client
+% brew install --cask mysqlworkbench
+```
+
+#### Mac air M1 암호
+* (secret)
+
+### 실행 / 실행 / 비밀번호 설정 / 종료
+```sh
+% brew services start mysql
+% mysql -uroot -p
+mysql > exit
+% mysql_secure_installation
+% brew services stop mysql
+```
+
+### 암호 레벨 확인
+```sql
+SHOW VARIABLES LIKE 'validate_password%';
+```
+
+### 접속 권한 수정
+```sql
+
+CREATE USER 'ci_user'@'localhost' IDENTIFIED BY 'secret';
+CREATE USER 'ci_user'@'%' IDENTIFIED BY 'secret';
+
+GRANT ALL PRIVILEGES ON ci0611.* TO 'ci_user'@'localhost' WITH GRANT OPTION;
+
+GRANT ALL PRIVILEGES ON ci0611.* TO 'ci_user'@'%' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;
+
+
+
+```
+
+## Codeigniter 4
+
+### 설치
+```sh
+% composer create-project codeigniter4/appstarter my-project
+```
+
+### 기타
+```sh
+# 실행
+% php spark serve
+
+# 프로세스 확인
+% ps -ef | grep php
+  502 75845 74467   0 11:15AM ttys000    0:00.06 php spark serve
+  502 75846 75845   0 11:15AM ttys000    0:00.21 /opt/homebrew/Cellar/php/8.0.7/bin/php -S localhost:8080 -t /Users/hyunsung.lee/Desktop/yispg/ci4/ci0611_01/public/ /Users/hyunsung.lee/Desktop/yispg/ci4/ci0611_01/vendor/codeigniter4/framework/system/Commands/Server/rewrite.php
+
+# 강제 종료 
+% kill -9 75845
+% kill -9 75846
+```
+
+
+
+
+
+
