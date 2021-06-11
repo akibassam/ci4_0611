@@ -133,7 +133,6 @@ FLUSH PRIVILEGES;
   502 75846 75845   0 11:15AM ttys000    0:00.21 /opt/homebrew/Cellar/php/8.0.7/bin/php -S localhost:8080 -t /Users/hyunsung.lee/Desktop/yispg/ci4/ci0611_01/public/ /Users/hyunsung.lee/Desktop/yispg/ci4/ci0611_01/vendor/codeigniter4/framework/system/Commands/Server/rewrite.php
 
 # 강제 종료 
-% kill -9 75845
 % kill -9 75846
 ```
 
