@@ -112,7 +112,7 @@ INSERT INTO news VALUES
 ### 유저 생성, 접속 권한 설정
 
 * MySQL 8부터 사용되는 인증 플러그인: caching_sha2_password
-  * 보안 연결이나 RSA 보안을 사용하지 않으면 아래와 같은 에러 발생
+  * 보안 연결이나 RSA 보안을 사용하지 않으면 아래와 같은 에러 발생하므로 유저 생성 시 인증 플러그인을 고려할 것
 
 ```sh
 Authentication plugin 'caching_sha2_password' cannot be loaded:
