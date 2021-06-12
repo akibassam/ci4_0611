@@ -67,12 +67,6 @@ alias composer="php /usr/local/bin/composer/composer.phar"
 % source ~/.zshrc
 ```
 
-
-
-
-
-
-
 ## MySQL
 
 ### 설치 
@@ -81,9 +75,6 @@ alias composer="php /usr/local/bin/composer/composer.phar"
 % brew install mysql-client
 % brew install --cask mysqlworkbench
 ```
-
-#### Mac air M1 암호
-* (secret)
 
 ### 실행 / 실행 / 비밀번호 설정 / 종료
 ```sh
@@ -99,20 +90,58 @@ mysql > exit
 SHOW VARIABLES LIKE 'validate_password%';
 ```
 
-### 접속 권한 수정
+### 데이터베이스 생성, 테이블 생성 및 데이터 입력
 ```sql
+CREATE DATABASE ci0611;
 
+CREATE TABLE news (
+    id int(11) NOT NULL AUTO_INCREMENT,
+    title varchar(128) NOT NULL,
+    slug varchar(128) NOT NULL,
+    body text NOT NULL,
+    PRIMARY KEY (id),
+    KEY slug (slug)
+);
+
+INSERT INTO news VALUES
+(1,'Elvis sighted','elvis-sighted','Elvis was sighted at the Podunk internet cafe. It looked like he was writing a CodeIgniter app.'),
+(2,'Say it isn\'t so!','say-it-isnt-so','Scientists conclude that some programmers have a sense of humor.'),
+(3,'Caffeination, Yes!','caffeination-yes','World\'s largest coffee shop open onsite nested coffee shop for staff only.');
+```
+
+### 유저 생성, 접속 권한 설정
+
+* MySQL 8부터 사용되는 인증 플러그인: caching_sha2_password
+  * 보안 연결이나 RSA 보안을 사용하지 않으면 아래와 같은 에러 발생
+
+```sh
+Authentication plugin 'caching_sha2_password' cannot be loaded:
+```
+
+#### MySQL 8 이상 버전일 경우 
+```sql
+CREATE USER 'nd_user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'secret';
+CREATE USER 'nd_user'@'%' IDENTIFIED WITH mysql_native_password BY 'secret';
+```
+
+#### MySQL 8 이전 버전일 경우
+```sql
 CREATE USER 'ci_user'@'localhost' IDENTIFIED BY 'secret';
 CREATE USER 'ci_user'@'%' IDENTIFIED BY 'secret';
-
-GRANT ALL PRIVILEGES ON ci0611.* TO 'ci_user'@'localhost' WITH GRANT OPTION;
-
-GRANT ALL PRIVILEGES ON ci0611.* TO 'ci_user'@'%' WITH GRANT OPTION;
+```
+#### 권한 부여
+```sql
+GRANT ALL PRIVILEGES ON ci0611.* TO 'nd_user'@'localhost' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON ci0611.* TO 'nd_user'@'%' WITH GRANT OPTION;
 
 FLUSH PRIVILEGES;
+```
 
 
 
+### 유저 확인 
+```sql
+SELECT Host,User,plugin,authentication_string FROM mysql.user;
 ```
 
 ## Codeigniter 4
